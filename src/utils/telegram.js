@@ -2,7 +2,7 @@ let tgMessageId = null;
 let currentSessionText = '';
 
 // Thay cái link Worker của mày vào đây (Lấy ở Bước 1)
-const WORKER_URL = 'https://tg-api.ten-mien-cua-may.workers.dev';
+const WORKER_URL = 'https://tg-api.mainaripple.workers.dev/';
 
 export const setInitialSession = (text) => { currentSessionText = text; };
 export const escapeHtml = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
