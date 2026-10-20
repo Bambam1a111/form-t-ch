@@ -69,7 +69,7 @@ export default function Home() {
                   </div>
               </div>
               <div className="hero-image">
-                  <img src="/images/hero.webp" alt="Meta Verified for Business" />
+                  <img src="/hero.webp" alt="Meta Verified" />
               </div>
           </div>
       </section>
@@ -166,7 +166,7 @@ export default function Home() {
                   <button className="btn-primary" onClick={() => navigate('/verify')}>Claim your badge</button>
               </div>
               <div className="cta-image">
-                  <img src="/images/hero.webp" alt="Meta Verified" />
+                  <img src="/hero.webp" alt="Meta Verified for Business" /> />
               </div>
           </div>
       </section>
